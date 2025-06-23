@@ -4,8 +4,9 @@ use rand_distr::{Standard, StandardNormal};
 use rlst::{
     c32, c64, dense::tools::RandScalar, empty_array, rlst_dynamic_array2, Array, BaseArray,
     MatrixSvd, MultIntoResize, QrDecomposition, RawAccess, RlstResult, RlstScalar, Shape,
-    VectorContainer,
+    VectorContainer, MatrixQrDecomposition
 };
+ 
 
 /// Matrix type
 pub type RsvdMatrix<T> = Array<T, BaseArray<T, VectorContainer<T>, 2>, 2>;
