@@ -26,7 +26,7 @@ num = "0.4"
 rayon = "1.9"
 rand = "0.8.5"
 kifmm-fftw-sys = { path = "../fftw-sys" }
-green-kernels = { git = "https://github.com/bempp/green-kernels", rev = "e01a482f070e09e114f12b2ea1a1b2c1064881bb" }
+green-kernels = { git = "https://github.com/ignacia-fp/green-kernels-for-rsrs"}
 lazy_static = "1.4.0"
 num-complex = "0.4.5"
 mpi = { version = "0.8.*", optional = true, features = ["complex"]}

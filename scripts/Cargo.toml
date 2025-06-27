@@ -7,7 +7,7 @@ edition = "2021"
 kifmm ={ path = "../kifmm", features = ["mpi"]}
 itertools = "0.13.*"
 #green-kernels = { version = "0.2.2", default-features = false }
-green-kernels = { git = "https://github.com/bempp/green-kernels-for-rsrs.git"}
+green-kernels = { git = "https://github.com/ignacia-fp/green-kernels-for-rsrs"}
 #rlst = {version = "0.2.0", default-features = false}
 rlst = { git = "https://github.com/linalg-rs/rlst.git", branch = "extend_abstract_operator", features = ["mpi"]}
 rand = "0.8.5"
