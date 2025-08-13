@@ -4,7 +4,7 @@ use rand_distr::{Standard, StandardNormal};
 use rlst::{
     c32, c64, dense::tools::RandScalar, empty_array, rlst_dynamic_array2, Array, BaseArray,
     MatrixSvd, MultIntoResize, QrDecomposition, RawAccess, RlstResult, RlstScalar, Shape,
-    VectorContainer, MatrixQrDecomposition
+    VectorContainer, MatrixQrDecomposition, Pivoting
 };
  
 
@@ -114,7 +114,7 @@ macro_rules! generate_randomised_range_finder_fixed_rank {
 
                         // Ortho-normalise columns using QR
                         let qr =
-                            QrDecomposition::<$ty, _>::new(y).expect("QR Decomposition failed");
+                            QrDecomposition::<$ty, _>::new(y, Pivoting::True).expect("QR Decomposition failed");
                         qr.get_q_alloc(q1.r_mut()).unwrap();
 
                         let mut q2 = rlst_dynamic_array2!($ty, [mat.shape()[1], size]);
@@ -123,24 +123,24 @@ macro_rules! generate_randomised_range_finder_fixed_rank {
                         for _ in 0..n_iter {
                             let atq = empty_array::<$ty, 2>()
                                 .simple_mult_into_resize(mat_transpose.r(), q1.r());
-                            let qr = QrDecomposition::<$ty, _>::new(atq).unwrap();
+                            let qr = QrDecomposition::<$ty, _>::new(atq, Pivoting::True).unwrap();
                             qr.get_q_alloc(q2.r_mut()).unwrap();
 
                             let aq =
                                 empty_array::<$ty, 2>().simple_mult_into_resize(mat.r(), q2.r());
 
-                            let qr = QrDecomposition::<$ty, _>::new(aq).unwrap();
+                            let qr = QrDecomposition::<$ty, _>::new(aq, Pivoting::True).unwrap();
                             qr.get_q_alloc(q1.r_mut()).unwrap();
                         }
 
                         let atq = empty_array::<$ty, 2>()
                             .simple_mult_into_resize(mat_transpose.r(), q1.r());
 
-                        let qr = QrDecomposition::<$ty, _>::new(atq).unwrap();
+                        let qr = QrDecomposition::<$ty, _>::new(atq, Pivoting::True).unwrap();
                         qr.get_q_alloc(q2.r_mut()).unwrap();
                         let aq = empty_array::<$ty, 2>().simple_mult_into_resize(mat.r(), q2.r());
 
-                        let qr = QrDecomposition::<$ty, _>::new(aq).unwrap();
+                        let qr = QrDecomposition::<$ty, _>::new(aq, Pivoting::True).unwrap();
                         qr.get_q_alloc(q1.r_mut()).unwrap();
 
                         return q1;
@@ -153,7 +153,7 @@ macro_rules! generate_randomised_range_finder_fixed_rank {
 
             // Ortho-normalise columns using QR
             let mut q = rlst_dynamic_array2!($ty, y.shape());
-            let qr = QrDecomposition::<$ty, _>::new(y).expect("QR Decomposition failed");
+            let qr = QrDecomposition::<$ty, _>::new(y, Pivoting::True).expect("QR Decomposition failed");
             qr.get_q_alloc(q.r_mut()).unwrap();
 
             q
@@ -270,7 +270,7 @@ macro_rules! generate_randomised_range_finder_fixed_error {
                 let mut y_loop = rlst_dynamic_array2!($type, y_shape);
                 y_loop.r_mut().fill_from(y_copy.r());
 
-                let qr = QrDecomposition::<$type, _>::new(y_loop).unwrap();
+                let qr = QrDecomposition::<$type, _>::new(y_loop, Pivoting::True).unwrap();
                 qr.get_q_alloc(q.r_mut()).unwrap();
                 qt.r_mut().fill_from(q.r().conj().transpose());
                 q_curr = rlst_dynamic_array2!($type, q.shape());
